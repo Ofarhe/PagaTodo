@@ -51,8 +51,6 @@ const pageStyle = StyleSheet.create({
     height: '100%',
     backgroundColor: THEME.BANKING.BACKGROUND,
     flexGrow: 1,
-    borderWidth: 1,
-    borderColor: 'red',
   },
   title: {
     color: '#fff',
@@ -61,8 +59,6 @@ const pageStyle = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 10,
     backgroundColor: THEME.BANKING.STATUS,
-    borderWidth: 1,
-    borderColor: 'cyan',
   },
 });
 

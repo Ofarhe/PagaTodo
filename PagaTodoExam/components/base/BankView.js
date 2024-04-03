@@ -26,28 +26,22 @@ const pageStyle = StyleSheet.create({
   },
   bankData: {
     flex: 1,
-    minHeight: 150,
+    minHeight: 120,
     flexDirection: 'row',
-    paddingVertical: 12,
+    paddingVertical: 10,
     paddingHorizontal: 6,
     alignItems: 'center',
     alignContent: 'center',
-    borderWidth: 1,
-    borderColor: 'black',
   },
   bankInfo: {
     flex: 2,
     paddingVertical: 6,
-    borderWidth: 1,
-    borderColor: 'white',
   },
   icon: {
     flex: 1,
     margin: 10,
     height: '70%',
     resizeMode: 'contain',
-    borderWidth: 1,
-    borderColor: 'white',
   },
 });
 

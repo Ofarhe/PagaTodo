@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import MainLayout from '../layout/MainLayout';
 import {
   ActivityIndicator,
+  Alert,
   Pressable,
   StyleSheet,
   Text,
@@ -10,6 +11,7 @@ import {
 import {THEME} from '../../utils/colors/colors';
 import BankView from '../../components/base/BankView';
 import {FlatList} from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function BankScreen({navigation}) {
   const onPressHandler = () => {
@@ -18,18 +20,42 @@ function BankScreen({navigation}) {
 
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
+  // TODO: Delete after testing loaders
+  const delay = milliseconds =>
+    new Promise(resolve => setTimeout(resolve, milliseconds));
+
   const getBanks = async () => {
     try {
-      const response = await fetch(
-        'https://dev.obtenmas.com/catom/api/challenge/banks',
-        {
-          method: 'GET',
-        },
-      );
-      const json = await response.json();
-      setData(json);
+      console.log('Checking db data');
+      const stored = await AsyncStorage.getItem('BankingList');
+      const storedData = await JSON.parse(stored);
+      if (storedData !== null) {
+        console.log('Retrieving db stored data');
+        console.log(`Retrieved ${storedData.length} items stored in DB`);
+        setData(storedData);
+      } else {
+        console.log('Fetching API data');
+        const response = await fetch(
+          'https://dev.obtenmas.com/catom/api/challenge/banks',
+          {
+            method: 'GET',
+          },
+        );
+        const fetchData = await response.json();
+        if (fetchData.length !== undefined) {
+          console.log('Fetched API data');
+          await AsyncStorage.setItem('BankingList', JSON.stringify(fetchData));
+          console.log(`Stored data list with ${fetchData.length} items`);
+          setData(fetchData);
+        } else {
+          Alert.alert(
+            'No hay registros guardados. Intente de nuevo cuando haya conexión a Internet',
+          );
+          console.log('No stored items nor available connection');
+        }
+      }
     } catch (error) {
-      console.error(error);
+      console.error('Ha ocurrido el siguiente error: ' + error);
     } finally {
       setLoading(false);
     }
@@ -70,8 +96,7 @@ const pageStyle = StyleSheet.create({
     height: '100%',
     backgroundColor: THEME.BANKING.BACKGROUND,
     flexGrow: 1,
-    borderWidth: 1,
-    borderColor: 'red',
+    marginBottom: 15,
   },
   title: {
     color: '#fff',
@@ -80,13 +105,11 @@ const pageStyle = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 10,
     backgroundColor: THEME.BANKING.STATUS,
-    borderWidth: 1,
-    borderColor: 'cyan',
   },
   button: {
     marginTop: 10,
     alignSelf: 'center',
-    paddingHorizontal: 15,
+    paddingHorizontal: 25,
     paddingVertical: 10,
     backgroundColor: THEME.BANKING.INACTIVE,
     borderRadius: 10,
