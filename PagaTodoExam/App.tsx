@@ -1,33 +1,32 @@
-import {NavigationContainer} from '@react-navigation/native';
 import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
-import {THEME} from './utils/colors/colors';
-import MainLayout from './layout/MainLayout';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+import WelcomeScreen from './src/screens/WelcomeScreen';
+import BankScreen from './src/screens/BankScreen';
 
-function App(): React.JSX.Element {
+const Stack = createStackNavigator();
 
+function App() {
   return (
     <NavigationContainer>
-      <SafeAreaView style={pageStyles.container}>
-        <MainLayout />
-      </SafeAreaView>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Welcome"
+          component={WelcomeScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Banks"
+          component={BankScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }
-
-const pageStyles = StyleSheet.create({
-  container: {
-    backgroundColor: THEME.BANKING.BACKGROUND,
-  },
-});
 
 export default App;
