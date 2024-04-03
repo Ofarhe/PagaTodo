@@ -2,7 +2,6 @@ import React from 'react';
 import {
   View,
   StyleSheet,
-  Dimensions,
   SafeAreaView,
   StatusBar,
   Platform,
@@ -18,13 +17,7 @@ const MainContainer = ({children}) =>
     <SafeAreaView style={pageStyle.iosSafe}>{children}</SafeAreaView>
   );
 
-const MainLayout = ({
-  title = 'PagaTodo',
-  page = '1',
-  footer,
-  children,
-  navigation,
-}) => {
+const MainLayout = ({title = 'PagaTodo', children}) => {
   return (
     <MainContainer>
       <StatusBar backgroundColor={THEME.PAGATODO.STATUS} />
@@ -35,7 +28,6 @@ const MainLayout = ({
           </View>
           {children}
         </View>
-        {footer && {...footer}}
       </ScrollView>
     </MainContainer>
   );
@@ -59,6 +51,7 @@ const pageStyle = StyleSheet.create({
     paddingVertical: 10,
     backgroundColor: THEME.BANKING.STATUS,
   },
+  loader: {},
 });
 
 export default MainLayout;

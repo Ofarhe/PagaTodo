@@ -15,7 +15,7 @@ function WelcomeScreen({navigation}) {
         style={pageStyles.tinyLogo}
       />
       <Pressable onPress={onPressHandler} style={pageStyles.button}>
-        <Text>Iniciar</Text>
+        <Text style={pageStyles.text}>Iniciar</Text>
       </Pressable>
     </MainLayout>
   );
@@ -25,16 +25,19 @@ const pageStyles = StyleSheet.create({
   tinyLogo: {
     width: 100,
     height: 100,
-    marginTop: 25,
+    marginTop: 50,
     alignSelf: 'center',
   },
   button: {
-    marginTop: 10,
+    marginVertical: 25,
     alignSelf: 'center',
     paddingHorizontal: 15,
     paddingVertical: 10,
     backgroundColor: THEME.BANKING.INACTIVE,
     borderRadius: 10,
+  },
+  text: {
+    color: THEME.WHITE,
   },
 });
 

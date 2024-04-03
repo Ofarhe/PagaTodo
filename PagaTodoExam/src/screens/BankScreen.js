@@ -26,9 +26,6 @@ function BankScreen({navigation}) {
 
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
-  // TODO: Delete after testing loaders
-  const delay = milliseconds =>
-    new Promise(resolve => setTimeout(resolve, milliseconds));
 
   const getBanks = async () => {
     try {
@@ -67,36 +64,45 @@ function BankScreen({navigation}) {
 
   return (
     <MainLayout title="Nuestros bancos son:">
-      <View style={pageStyle.container}>
-        <View>
-          {isLoading ? (
-            <ActivityIndicator />
-          ) : (
-            <ScrollView>
-              {data.map((item, index) => (
-                <BankView key={index} bankItem={item} />
-              ))}
-            </ScrollView>
-          )}
-        </View>
-        <Pressable onPress={onPressHandler} style={pageStyle.button}>
-          <Text>Salir</Text>
-        </Pressable>
+      <View style={pageStyles.container}>
+        {isLoading && (
+          <View style={pageStyles.loader}>
+            <ActivityIndicator
+              size={'large'}
+              color={THEME.WHITE}
+              animating={isLoading}
+            />
+            <Text style={pageStyles.loaderText}>Obteniendo información</Text>
+          </View>
+        )}
+        <ScrollView style={pageStyles.list}>
+          {data.map((item, index) => (
+            <BankView key={index} bankItem={item} />
+          ))}
+        </ScrollView>
+        {!isLoading && (
+          <Pressable onPress={onPressHandler} style={pageStyles.button}>
+            <Text style={pageStyles.text}>Salir</Text>
+          </Pressable>
+        )}
       </View>
     </MainLayout>
   );
 }
 
-const pageStyle = StyleSheet.create({
+const pageStyles = StyleSheet.create({
   iosSafe: {
     flex: 1,
   },
   container: {
+    flex: 1,
     width: '100%',
     height: '100%',
     backgroundColor: THEME.BANKING.BACKGROUND,
+  },
+  list: {
     flexGrow: 1,
-    marginBottom: 15,
+    height: '100%',
   },
   title: {
     color: '#fff',
@@ -107,12 +113,28 @@ const pageStyle = StyleSheet.create({
     backgroundColor: THEME.BANKING.STATUS,
   },
   button: {
-    marginTop: 10,
+    marginVertical: 10,
     alignSelf: 'center',
     paddingHorizontal: 25,
     paddingVertical: 10,
     backgroundColor: THEME.BANKING.INACTIVE,
     borderRadius: 10,
+  },
+  loader: {
+    height: 500,
+    width: '100%',
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  loaderText: {
+    fontSize: 14,
+    paddingVertical: 10,
+    alignSelf: 'center',
+    justifyContent: 'center',
+  },
+  text: {
+    color: THEME.WHITE,
   },
 });
 
