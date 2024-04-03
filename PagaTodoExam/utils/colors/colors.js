@@ -17,15 +17,6 @@ const theme_colors = {
     BACKGROUND: '#94b8d7',
     STATUS: '#7498b6',
   },
-  DEVIN101: {
-    PRIMARY: '#000a23',
-    SECONDARY: '#153f59',
-    ACTIVE: '#02152b',
-    INACTIVE: '#365b77',
-    BORDER: '#012e46',
-    BACKGROUND: '#94b8d7',
-    STATUS: '#7498b6',
-  },
   BLACK: '#000',
   WHITE: '#fff',
 };

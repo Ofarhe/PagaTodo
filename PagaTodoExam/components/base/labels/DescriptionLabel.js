@@ -42,7 +42,7 @@ const pageStyle = StyleSheet.create({
   },
   descriptionStyle: {
     flex: 1,
-    fontSize: 13,
+    fontSize: 14,
     color: THEME.BANKING.SECONDARY,
     width: '100%',
   },

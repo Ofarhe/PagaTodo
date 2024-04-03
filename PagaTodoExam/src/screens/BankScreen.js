@@ -10,8 +10,14 @@ import {
 } from 'react-native';
 import {THEME} from '../../utils/colors/colors';
 import BankView from '../../components/base/BankView';
-import {FlatList} from 'react-native-gesture-handler';
+import {ScrollView} from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useBackpress} from '../../utils/colors/utils';
+import {
+  fetchAPIData,
+  getStoredData,
+  saveStoredData,
+} from '../../repository/web/BankingRepository';
 
 function BankScreen({navigation}) {
   const onPressHandler = () => {
@@ -27,25 +33,17 @@ function BankScreen({navigation}) {
   const getBanks = async () => {
     try {
       console.log('Checking db data');
-      const stored = await AsyncStorage.getItem('BankingList');
-      const storedData = await JSON.parse(stored);
+      const storedData = await getStoredData();
       if (storedData !== null) {
         console.log('Retrieving db stored data');
         console.log(`Retrieved ${storedData.length} items stored in DB`);
         setData(storedData);
       } else {
         console.log('Fetching API data');
-        const response = await fetch(
-          'https://dev.obtenmas.com/catom/api/challenge/banks',
-          {
-            method: 'GET',
-          },
-        );
-        const fetchData = await response.json();
+        const fetchData = await fetchAPIData();
         if (fetchData.length !== undefined) {
           console.log('Fetched API data');
-          await AsyncStorage.setItem('BankingList', JSON.stringify(fetchData));
-          console.log(`Stored data list with ${fetchData.length} items`);
+          saveStoredData(fetchData);
           setData(fetchData);
         } else {
           Alert.alert(
@@ -65,18 +63,20 @@ function BankScreen({navigation}) {
     getBanks();
   }, []);
 
+  useBackpress();
+
   return (
-    <MainLayout title="Bienvenidos">
+    <MainLayout title="Nuestros bancos son:">
       <View style={pageStyle.container}>
         <View>
           {isLoading ? (
             <ActivityIndicator />
           ) : (
-            <FlatList
-              data={data}
-              keyExtractor={({bankName}) => bankName}
-              renderItem={({item}) => <BankView bankItem={item} />}
-            />
+            <ScrollView>
+              {data.map((item, index) => (
+                <BankView key={index} bankItem={item} />
+              ))}
+            </ScrollView>
           )}
         </View>
         <Pressable onPress={onPressHandler} style={pageStyle.button}>

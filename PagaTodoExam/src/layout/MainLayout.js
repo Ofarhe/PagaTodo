@@ -28,7 +28,7 @@ const MainLayout = ({
   return (
     <MainContainer>
       <StatusBar backgroundColor={THEME.PAGATODO.STATUS} />
-      <ScrollView style={pageStyle.container}>
+      <ScrollView style={pageStyle.container} nestedScrollEnabled={true}>
         <View style={pageStyle.container}>
           <View>
             <Text style={pageStyle.title}>{title}</Text>
@@ -37,7 +37,6 @@ const MainLayout = ({
         </View>
         {footer && {...footer}}
       </ScrollView>
-      {/* //TODO: Change to FlatList with Header and Footer components for better performance */}
     </MainContainer>
   );
 };
